@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алена Скрыпник](https://up.htmlacademy.ru/javascript/20/user/479397).
-* Наставник: `Неизвестно`.
+* Наставник: [Саша Джинн](https://htmlacademy.ru/profile/id354189).
 
 ---
 
