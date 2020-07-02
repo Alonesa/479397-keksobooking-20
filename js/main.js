@@ -7,12 +7,11 @@ var Y_MIN = 130;
 var Y_MAX = 630;
 var MAP_PIN_WIDTH = 50;
 var MAP_PIN_HEIGHT = 70;
-
-var url = 'img/avatars/user0';
-var typesOfRent = ['palace', 'flat', 'house', 'bungalo'];
-var checkHours = ['12:00', '13:00', '14:00'];
-var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photosList = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+var LINK = 'img/avatars/user0';
+var TYPES_OF_RENT = ['palace', 'flat', 'house', 'bungalo'];
+var CHECK_HOURS = ['12:00', '13:00', '14:00'];
+var FEATURES_LIST = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS_LIST = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
@@ -29,23 +28,23 @@ var getRandomValue = function (min, max) {
 
 var typesOfRentList = [];
 
-var getOffersInitialData = function (index) {
+var getOfferInitialData = function (index) {
   return {
     author: {
-      avatar: url + index + '.png'
+      avatar: LINK + index + '.png'
     },
     offer: {
       title: 'Заголовок',
       address: '600, 350',
       price: 0,
-      type: typesOfRent,
+      type: TYPES_OF_RENT,
       rooms: getRandomValue(MIN_ROOMS, MAX_ROOMS),
       guests: 0,
-      checkin: checkHours,
-      checkout: checkHours,
-      features: featuresList,
+      checkin: CHECK_HOURS,
+      checkout: CHECK_HOURS,
+      features: FEATURES_LIST,
       description: 'Описание',
-      photos: photosList
+      photos: PHOTOS_LIST
     },
     location: {
       x: getRandomValue(0, mapPinRightmostX),
@@ -56,7 +55,7 @@ var getOffersInitialData = function (index) {
 
 var getOffers = function () {
   for (var i = 0; i < QUANTITY; i++) {
-    typesOfRentList.push(getOffersInitialData(i));
+    typesOfRentList.push(getOfferInitialData(i));
   }
 };
 
@@ -88,21 +87,3 @@ var renderPins = function () {
 };
 
 renderPins();
-
-
-var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
-var createOffers = function () {
-  var productCard = cardTemplate.cloneNode(true);
-
-  var title = productCard.querySelector('.popup__title');
-  title.textContent = getOffersInitialData.offer.title;
-
-  for (var i = 0; i < typesOfRentList.lenght; i++) {
-    createOffers(getOffersInitialData.offer[i]);
-  }
-
-  return title;
-};
-
-createOffers();
