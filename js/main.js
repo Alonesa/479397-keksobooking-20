@@ -92,7 +92,7 @@ var renderPins = function () {
 
 renderPins();
 
-var propertyTypesRussian = {
+var propertyTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
@@ -108,31 +108,31 @@ var createOffers = function () {
 
   productCard.querySelector('.popup__title')
   .textContent = propertyTypesList[0].offer.title;
-
   productCard.querySelector('.popup__text--address')
   .textContent = propertyTypesList[0].offer.address;
-
   productCard.querySelector('.popup__text--price')
   .textContent = propertyTypesList[0].offer.price + ' ₽/ночь';
-
   var propertyType = productCard.querySelector('.popup__type');
-  var getPropertyType = function (type) {
-    return propertyTypesRussian[type];
-  };
-  propertyType.textContent = getPropertyType(propertyTypesList[0].offer.type);
-
+  propertyType.textContent = propertyTypes[propertyTypesList[0].offer.type];
   productCard.querySelector('.popup__text--capacity')
   .textContent = propertyTypesList[0].offer.rooms + ' комнаты для '
-   + propertyTypesList[0].offer.guests + ' гостей';
-
+  + propertyTypesList[0].offer.guests + ' гостей';
   productCard.querySelector('.popup__text--time')
   .textContent = 'Заезд после ' + propertyTypesList[0].offer.checkin + ', '
   + 'выезд до ' + propertyTypesList[0].offer.checkout;
+
+  var oldElementRemove = function (parent) {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+  };
 
   var featuresList = productCard.querySelector('.popup__features');
   var createFeatures = function () {
     var fragment = document.createDocumentFragment();
     for (var j = 0; j < propertyTypesList[0].offer.features.length; j++) {
+      oldElementRemove(featuresList);
+
       var listItem = document.createElement('li');
       listItem.classList.add('popup__feature');
       listItem.classList.add('popup__feature--' + FEATURES_LIST[j]);
@@ -142,7 +142,6 @@ var createOffers = function () {
   };
 
   var renderFeatures = function () {
-    featuresList.innerHTML = '';
     var newFeatures = createFeatures();
     featuresList.appendChild(newFeatures);
   };
@@ -156,6 +155,8 @@ var createOffers = function () {
   var addPhotos = function () {
     var fragment = document.createDocumentFragment();
     for (var j = 0; j < propertyTypesList[0].offer.photos.length; j++) {
+      oldElementRemove(propertyPhotos);
+
       var imgItem = document.createElement('img');
       imgItem.classList.add('popup__photo');
       imgItem.src = propertyTypesList[0].offer.photos[j];
@@ -168,7 +169,6 @@ var createOffers = function () {
   };
 
   var renderPhotos = function () {
-    propertyPhotos.innerHTML = '';
     var newPhotos = addPhotos();
     propertyPhotos.appendChild(newPhotos);
   };
