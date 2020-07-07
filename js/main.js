@@ -92,6 +92,17 @@ var renderPins = function () {
 
 renderPins();
 
+var childRender = function (callRender, elementAppend) {
+  var createNewElement = callRender();
+  elementAppend.appendChild(createNewElement);
+};
+
+var oldElementRemove = function (parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+};
+
 var propertyTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -121,12 +132,6 @@ var createOffers = function () {
   .textContent = 'Заезд после ' + propertyTypesList[0].offer.checkin + ', '
   + 'выезд до ' + propertyTypesList[0].offer.checkout;
 
-  var oldElementRemove = function (parent) {
-    while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
-    }
-  };
-
   var featuresList = productCard.querySelector('.popup__features');
   var createFeatures = function () {
     var fragment = document.createDocumentFragment();
@@ -141,12 +146,7 @@ var createOffers = function () {
     return fragment;
   };
 
-  var renderFeatures = function () {
-    var newFeatures = createFeatures();
-    featuresList.appendChild(newFeatures);
-  };
-
-  renderFeatures();
+  childRender(createFeatures, featuresList);
 
   productCard.querySelector('.popup__description')
   .textContent = propertyTypesList[0].offer.description;
@@ -168,12 +168,7 @@ var createOffers = function () {
     return fragment;
   };
 
-  var renderPhotos = function () {
-    var newPhotos = addPhotos();
-    propertyPhotos.appendChild(newPhotos);
-  };
-
-  renderPhotos();
+  childRender(addPhotos, propertyPhotos);
 
   var propertyAuthorAvatar = productCard.querySelector('.popup__avatar');
   propertyAuthorAvatar.src = propertyTypesList[1].author.avatar;
