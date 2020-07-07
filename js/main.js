@@ -103,6 +103,31 @@ var childRender = function (callRender, elementAppend) {
   elementAppend.appendChild(createNewElement);
 };
 
+var createFeatures = function () {
+  var fragment = document.createDocumentFragment();
+  for (var j = 0; j < propertyTypesList[0].offer.features.length; j++) {
+    var listItem = document.createElement('li');
+    listItem.classList.add('popup__feature');
+    listItem.classList.add('popup__feature--' + FEATURES_LIST[j]);
+    fragment.appendChild(listItem);
+  }
+  return fragment;
+};
+
+var addPhotos = function () {
+  var fragment = document.createDocumentFragment();
+  for (var j = 0; j < propertyTypesList[0].offer.photos.length; j++) {
+    var imgItem = document.createElement('img');
+    imgItem.classList.add('popup__photo');
+    imgItem.src = propertyTypesList[0].offer.photos[j];
+    imgItem.width = 45;
+    imgItem.height = 40;
+    imgItem.alt = 'Фотография жилья';
+    fragment.appendChild(imgItem);
+  }
+  return fragment;
+};
+
 var propertyTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -133,41 +158,14 @@ var createOffers = function () {
   + 'выезд до ' + propertyTypesList[0].offer.checkout;
 
   var featuresList = productCard.querySelector('.popup__features');
-  var createFeatures = function () {
-    var fragment = document.createDocumentFragment();
-    for (var j = 0; j < propertyTypesList[0].offer.features.length; j++) {
-      oldElementRemove(featuresList);
-
-      var listItem = document.createElement('li');
-      listItem.classList.add('popup__feature');
-      listItem.classList.add('popup__feature--' + FEATURES_LIST[j]);
-      fragment.appendChild(listItem);
-    }
-    return fragment;
-  };
-
+  oldElementRemove(featuresList);
   childRender(createFeatures, featuresList);
 
   productCard.querySelector('.popup__description')
   .textContent = propertyTypesList[0].offer.description;
 
   var propertyPhotos = productCard.querySelector('.popup__photos');
-  var addPhotos = function () {
-    var fragment = document.createDocumentFragment();
-    for (var j = 0; j < propertyTypesList[0].offer.photos.length; j++) {
-      oldElementRemove(propertyPhotos);
-
-      var imgItem = document.createElement('img');
-      imgItem.classList.add('popup__photo');
-      imgItem.src = propertyTypesList[0].offer.photos[j];
-      imgItem.width = 45;
-      imgItem.height = 40;
-      imgItem.alt = 'Фотография жилья';
-      fragment.appendChild(imgItem);
-    }
-    return fragment;
-  };
-
+  oldElementRemove(propertyPhotos);
   childRender(addPhotos, propertyPhotos);
 
   var propertyAuthorAvatar = productCard.querySelector('.popup__avatar');
