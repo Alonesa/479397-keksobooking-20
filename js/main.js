@@ -92,15 +92,15 @@ var renderPins = function () {
 
 renderPins();
 
-var childRender = function (callRender, elementAppend) {
-  var createNewElement = callRender();
-  elementAppend.appendChild(createNewElement);
-};
-
 var oldElementRemove = function (parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
+};
+
+var childRender = function (callRender, elementAppend) {
+  var createNewElement = callRender();
+  elementAppend.appendChild(createNewElement);
 };
 
 var propertyTypes = {
