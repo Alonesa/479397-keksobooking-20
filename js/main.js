@@ -17,7 +17,6 @@ var PHOTOS_LIST = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
 
 
 var mapWithOffers = document.querySelector('.map');
-mapWithOffers.classList.remove('map--faded');
 var mapPinRightmostX = mapWithOffers.offsetWidth - MAP_PIN_WIDTH - 1;
 var mapPins = document.querySelector('.map__pins');
 
