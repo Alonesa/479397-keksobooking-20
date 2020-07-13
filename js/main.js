@@ -5,6 +5,10 @@ var MIN_ROOMS = 1;
 var MAX_ROOMS = 5;
 var Y_MIN = 130;
 var Y_MAX = 630;
+var MIN_PRICE = 0;
+var MAX_PRICE = 1000000;
+var MIN_GUESTS = 1;
+var MAX_GUESTS = 3;
 var MAP_PIN_WIDTH = 50;
 var MAP_PIN_HEIGHT = 70;
 var LINK = 'img/avatars/user0';
@@ -39,10 +43,10 @@ var getOfferInitialData = function (index) {
     offer: {
       title: 'Заголовок',
       address: '600, 350',
-      price: getRandomValue(5000, 50000),
+      price: getRandomValue(MIN_PRICE, MAX_PRICE),
       type: getRandomElement(TYPES_OF_RENT),
       rooms: getRandomValue(MIN_ROOMS, MAX_ROOMS),
-      guests: getRandomValue(1, 3),
+      guests: getRandomValue(MIN_GUESTS, MAX_GUESTS),
       checkin: getRandomElement(CHECK_HOURS),
       checkout: getRandomElement(CHECK_HOURS),
       features: FEATURES_LIST,
@@ -88,8 +92,6 @@ var renderPins = function () {
   var newMapPins = createPins();
   mapPins.appendChild(newMapPins);
 };
-
-renderPins();
 
 var oldElementRemove = function (parent) {
   while (parent.firstChild) {
@@ -138,7 +140,7 @@ var cardTemplate = document
 .querySelector('#card')
 .content.querySelector('.map__card');
 
-var createOffers = function () {
+var createProduct = function () {
   var productCard = cardTemplate.cloneNode(true);
 
   productCard.querySelector('.popup__title')
@@ -173,7 +175,58 @@ var createOffers = function () {
   return productCard;
 };
 
-var newCard = createOffers();
+var newCard = createProduct();
 
-mapWithOffers.querySelector('.map__filters-container')
-.insertBefore(newCard, null);
+var adForm = document.querySelector('.ad-form');
+var mapFiltersForm = document.querySelector('.map__filters');
+var adFormElements = adForm.querySelectorAll('.ad-form__element');
+var filtersFormElements = mapFiltersForm.querySelectorAll('.map__filter');
+var mainPin = mapWithOffers.querySelector('.map__pin--main');
+mainPin.draggable = true;
+
+var formDiactivation = function (disableElements) {
+  for (var i = 0; i < disableElements.length; i++) {
+    disableElements[i].disabled = true;
+  }
+};
+
+var disableFormElements = function () {
+  formDiactivation(adFormElements);
+  formDiactivation(filtersFormElements);
+};
+
+disableFormElements();
+
+var makeformElementsEnabled = function (disableElements) {
+  for (var i = 0; i < disableElements.length; i++) {
+    disableElements[i].disabled = false;
+  }
+};
+
+var enableFoemElements = function () {
+  makeformElementsEnabled(adFormElements);
+  makeformElementsEnabled(filtersFormElements);
+};
+
+var formActivation = function () {
+  mapWithOffers.classList.remove('map--fadded');
+  adForm.classList.remove('ad-form--disabled');
+  renderPins();
+
+  mapWithOffers.querySelector('.map__filters-container')
+  .insertBefore(newCard, null);
+};
+
+mainPin.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    enableFoemElements();
+    formActivation();
+  }
+});
+
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    enableFoemElements();
+    formActivation();
+  }
+});
