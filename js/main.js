@@ -184,7 +184,15 @@ var mapFiltersForm = document.querySelector('.map__filters');
 var adFormElements = adForm.querySelectorAll('.ad-form__element');
 var filtersFormElements = mapFiltersForm.querySelectorAll('.map__filter');
 var mainPin = mapWithOffers.querySelector('.map__pin--main');
-mainPin.draggable = true;
+var adressInput = document.querySelector('#address');
+
+var setAdressControl = function () {
+  adressInput.value = mainPin.offsetTop + ', ' + mainPin.offsetLeft;
+};
+
+var setFormAction = function () {
+  adForm.action = 'https://javascript.pages.academy/keksobooking';
+};
 
 var formDiactivation = function (disableElements) {
   for (var i = 0; i < disableElements.length; i++) {
@@ -193,6 +201,7 @@ var formDiactivation = function (disableElements) {
 };
 
 var disableFormElements = function () {
+  setAdressControl();
   formDiactivation(adFormElements);
   formDiactivation(filtersFormElements);
 };
@@ -208,6 +217,7 @@ var makeformElementsEnabled = function (disableElements) {
 var enableFoemElements = function () {
   makeformElementsEnabled(adFormElements);
   makeformElementsEnabled(filtersFormElements);
+  setFormAction();
 };
 
 var formActivation = function () {
@@ -215,6 +225,7 @@ var formActivation = function () {
   adForm.classList.remove('ad-form--disabled');
   renderPins();
 
+  mapFiltersForm.style.opacity = 1;
   mapWithOffers.querySelector('.map__filters-container')
   .insertBefore(newCard, null);
 };
@@ -232,3 +243,24 @@ mainPin.addEventListener('keydown', function (evt) {
     formActivation();
   }
 });
+
+
+var roomsQuantity = adForm.querySelector('#room_number');
+var guestsQuantity = document.querySelector('#capacity');
+
+var roomCapacity = function () {
+
+  if (roomsQuantity.value === 100 && guestsQuantity.value !== 0) {
+    guestsQuantity.setCustomValidity('Тип жилья не для гостей');
+  }
+
+  if (guestsQuantity.value > roomsQuantity.value) {
+    guestsQuantity.setCustomValidity('Количество гостей не должно превышать количество коммнат.');
+  }
+
+};
+
+
+guestsQuantity.addEventListener('input', roomCapacity);
+
+
