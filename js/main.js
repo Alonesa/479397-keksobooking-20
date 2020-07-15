@@ -36,13 +36,15 @@ var getRandomElement = function (arr) {
 var propertyTypesList = [];
 
 var getOfferInitialData = function (index) {
+  var positionX = getRandomValue(0, mapPinRightmostX);
+  var positionY = getRandomValue(Y_MIN, Y_MAX);
   return {
     author: {
-      avatar: LINK + index + '.png'
+      avatar: LINK + (index + 1) + '.png'
     },
     offer: {
       title: 'Заголовок',
-      address: '600, 350',
+      address: positionX + ', ' + positionY,
       price: getRandomValue(MIN_PRICE, MAX_PRICE),
       type: getRandomElement(TYPES_OF_RENT),
       rooms: getRandomValue(MIN_ROOMS, MAX_ROOMS),
@@ -54,8 +56,8 @@ var getOfferInitialData = function (index) {
       photos: PHOTOS_LIST
     },
     location: {
-      x: getRandomValue(0, mapPinRightmostX),
-      y: getRandomValue(Y_MIN, Y_MAX)
+      x: positionX,
+      y: positionY
     }
   };
 };
@@ -106,7 +108,7 @@ var childRender = function (callRender, elementAppend) {
 
 var createFeatures = function () {
   var fragment = document.createDocumentFragment();
-  for (var j = 0; j < propertyTypesList[0].offer.features.length; j++) {
+  for (var j = 0; j < propertyTypesList[j].offer.features.length; j++) {
     var listItem = document.createElement('li');
     listItem.classList.add('popup__feature');
     listItem.classList.add('popup__feature--' + FEATURES_LIST[j]);
@@ -117,10 +119,10 @@ var createFeatures = function () {
 
 var addPhotos = function () {
   var fragment = document.createDocumentFragment();
-  for (var j = 0; j < propertyTypesList[0].offer.photos.length; j++) {
+  for (var j = 0; j < propertyTypesList[j].offer.photos.length; j++) {
     var imgItem = document.createElement('img');
     imgItem.classList.add('popup__photo');
-    imgItem.src = propertyTypesList[0].offer.photos[j];
+    imgItem.src = propertyTypesList[j].offer.photos[j];
     imgItem.width = 45;
     imgItem.height = 40;
     imgItem.alt = 'Фотография жилья';
@@ -140,42 +142,42 @@ var cardTemplate = document
 .querySelector('#card')
 .content.querySelector('.map__card');
 
-var createProduct = function () {
+var createProduct = function (currentElement) {
   var productCard = cardTemplate.cloneNode(true);
 
   productCard.querySelector('.popup__title')
-  .textContent = propertyTypesList[0].offer.title;
+  .textContent = currentElement.offer.title;
   productCard.querySelector('.popup__text--address')
-  .textContent = propertyTypesList[0].offer.address;
+  .textContent = currentElement.offer.address;
   productCard.querySelector('.popup__text--price')
-  .textContent = propertyTypesList[0].offer.price + ' ₽/ночь';
+  .textContent = currentElement.offer.price + ' ₽/ночь';
   var propertyType = productCard.querySelector('.popup__type');
-  propertyType.textContent = propertyTypes[propertyTypesList[0].offer.type];
+  propertyType.textContent = propertyTypes[currentElement.offer.type];
   productCard.querySelector('.popup__text--capacity')
-  .textContent = propertyTypesList[0].offer.rooms + ' комнаты для '
-  + propertyTypesList[0].offer.guests + ' гостей';
+  .textContent = currentElement.offer.rooms + ' комнаты для '
+  + currentElement.offer.guests + ' гостей';
   productCard.querySelector('.popup__text--time')
-  .textContent = 'Заезд после ' + propertyTypesList[0].offer.checkin + ', '
-  + 'выезд до ' + propertyTypesList[0].offer.checkout;
+  .textContent = 'Заезд после ' + currentElement.offer.checkin + ', '
+  + 'выезд до ' + currentElement.offer.checkout;
 
   var featuresList = productCard.querySelector('.popup__features');
   oldElementRemove(featuresList);
   childRender(createFeatures, featuresList);
 
   productCard.querySelector('.popup__description')
-  .textContent = propertyTypesList[0].offer.description;
+  .textContent = currentElement.offer.description;
 
   var propertyPhotos = productCard.querySelector('.popup__photos');
   oldElementRemove(propertyPhotos);
   childRender(addPhotos, propertyPhotos);
 
   var propertyAuthorAvatar = productCard.querySelector('.popup__avatar');
-  propertyAuthorAvatar.src = propertyTypesList[1].author.avatar;
+  propertyAuthorAvatar.src = currentElement.author.avatar;
 
   return productCard;
 };
 
-var newCard = createProduct();
+var newCard = createProduct(propertyTypesList[0]);
 
 var adForm = document.querySelector('.ad-form');
 var mapFiltersForm = document.querySelector('.map__filters');
