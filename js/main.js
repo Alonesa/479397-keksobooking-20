@@ -78,7 +78,7 @@ var createPin = function () {
 
 var createPins = function () {
   var fragment = document.createDocumentFragment();
-  for (var j = 1; j < propertyTypesList.length; j++) {
+  for (var j = 0; j < propertyTypesList.length; j++) {
     var pin = createPin();
     pin.querySelector('.map__pin').style.left = propertyTypesList[j].location.x + (MAP_PIN_WIDTH / 2) + 'px';
     pin.querySelector('.map__pin').style.top = propertyTypesList[j].location.y - MAP_PIN_HEIGHT + 'px';
