@@ -249,16 +249,16 @@ var roomsQuantity = adForm.querySelector('#room_number');
 var guestsQuantity = document.querySelector('#capacity');
 
 var roomCapacity = function () {
-  if (roomsQuantity.value > guestsQuantity.value) {
-    roomsQuantity.setCustomValidity('Количество гостей не должно превышать количество комнат.');
-  }
-
   if (roomsQuantity.value === '100' && guestsQuantity.value !== 0) {
     roomsQuantity.setCustomValidity('Вариант размещения не предназначен для гостей. Проверьте поле количество мест');
   }
+
+  if (guestsQuantity.value > roomsQuantity.value) {
+    roomsQuantity.setCustomValidity('Количество гостей не должно превышать количество комнат.');
+    guestsQuantity.setCustomValidity('Количество гостей не должно превышать количество комнат.');
+  }
 };
 
-
 roomsQuantity.addEventListener('input', roomCapacity);
-
+guestsQuantity.addEventListener('input', roomCapacity);
 
