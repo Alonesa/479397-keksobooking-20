@@ -249,18 +249,16 @@ var roomsQuantity = adForm.querySelector('#room_number');
 var guestsQuantity = document.querySelector('#capacity');
 
 var roomCapacity = function () {
-
-  if (roomsQuantity.value === 100 && guestsQuantity.value !== 0) {
-    guestsQuantity.setCustomValidity('Тип жилья не для гостей');
+  if (roomsQuantity.value > guestsQuantity.value) {
+    roomsQuantity.setCustomValidity('Количество гостей не должно превышать количество комнат.');
   }
 
-  if (guestsQuantity.value > roomsQuantity.value) {
-    guestsQuantity.setCustomValidity('Количество гостей не должно превышать количество коммнат.');
+  if (roomsQuantity.value === '100' && guestsQuantity.value !== 0) {
+    roomsQuantity.setCustomValidity('Вариант размещения не предназначен для гостей. Проверьте поле количество мест');
   }
-
 };
 
 
-guestsQuantity.addEventListener('input', roomCapacity);
+roomsQuantity.addEventListener('input', roomCapacity);
 
 
